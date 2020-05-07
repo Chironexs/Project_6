@@ -1,0 +1,216 @@
+﻿@* @model IEnumerable<RoomBooking.MVC.Models.DbModels.Booking> *@
+@* *@
+@* @{ *@
+@*     ViewData["Title"] = "AdminList"; *@
+@*     Layout = "~/Views/Shared/_Layout2.cshtml"; *@
+@* } *@
+
+@* <h1>AdminList</h1> *@
+@* *@
+@* <p> *@
+@*     <a asp-action="Create">Create New</a> *@
+@* </p> *@
+@* <table class="table"> *@
+@*     <thead> *@
+@*     <tr> *@
+@*         <th> *@
+@*             @Html.DisplayNameFor(model => model.User) *@
+@*         </th> *@
+@*         <th> *@
+@*             @Html.DisplayNameFor(model => model.Room) *@
+@*         </th> *@
+@*         <th> *@
+@*             @Html.DisplayNameFor(model => model.Date) *@
+@*         </th> *@
+@*         <th> *@
+@*             @Html.DisplayNameFor(model => model.StarTime) *@
+@*         </th> *@
+@*         <th> *@
+@*             @Html.DisplayNameFor(model => model.EndTime) *@
+@*         </th> *@
+@*         <th> *@
+@*             @Html.DisplayNameFor(model => model.CreatedDateTime) *@
+@*         </th> *@
+@*         <th> *@
+@*             @Html.DisplayNameFor(model => model.AllDay) *@
+@*         </th> *@
+@*         <th> *@
+@*             @Html.DisplayNameFor(model => model.TotalPrice) *@
+@*         </th> *@
+@*         <th></th> *@
+@*     </tr> *@
+@*     </thead> *@
+@*     <tbody> *@
+@*     @foreach (var item in Model) *@
+@*     { *@
+@*         <tr> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.User.Id) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.Room.Id) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.Date) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.StarTime) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.EndTime) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.CreatedDateTime) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.AllDay) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.TotalPrice) *@
+@*             </td> *@
+@*             <td> *@
+@*                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@
+@*                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
+@*                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> *@
+@*             </td> *@
+@*         </tr> *@
+@*     } *@
+@*     </tbody> *@
+@* </table> *@
+
+@model RoomBooking.MVC.Models.DbModels.User
+@using Microsoft.AspNetCore.Identity
+
+
+@{
+    ViewData["Title"] = "RoomList";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div id="content-1">
+
+    <div class="container-fluid" style="margin-top: 40px;">
+        <div class="card shadow">
+            @* <div class="card-header py-3"> *@
+            @*     <p class="text-primary m-0 font-weight-bold"> *@
+            @*         <strong>Dodaj nową salę&nbsp;</strong> *@
+            @*         <a asp-controller="Room" asp-action="Add" class="btn btn-info btn-circle ml-1" role="button"> *@
+            @*             <i class="fas fa-plus text-white"></i> *@
+            @*         </a> *@
+            @*     <p class="text-primary m-0 font-weight-bold"> *@
+            @*         Lista sal konferencyjnych<br> *@
+            @*     </p> *@
+            @* </div> *@
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 text-nowrap">
+                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                            <label>
+                                Show&nbsp;
+                                <select class="form-control form-control-sm custom-select custom-select-sm">
+                                    <option value="10" selected="">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>&nbsp;
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-md-right dataTables_filter" id="dataTable_filter">
+                            <label>
+                                <input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                    <table class="table dataTable my-0" id="dataTable">
+                        <thead>
+                        <tr>
+                            <th>Data utworzenia</th>
+                            <th>Email użytkownika</th>
+                            <th>Nazwa sali</th>
+                            <th>Data</th>
+                            <th>Godzina od</th>
+                            <th>Godzina do</th>
+                            <th>Cena</th>
+                            <th>Akcja</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @foreach (var item in Model.Bookings)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedDateTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.User.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Room.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @String.Format("{0:HH:mm}", item.StarTime)
+                                </td>
+                                <td>
+                                    @String.Format("{0:HH:mm}", item.EndTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                                </td>
+                                <td>
+                                    <a class="btn btn-info btn-circle ml-1" role="button" asp-action="Detail" asp-route-id="@item.Id">
+                                        <i class="fas fa-info-circle text-white"></i>
+                                    </a>
+                                    <a class="btn btn-warning btn-circle ml-1" role="button" asp-action="Edit" asp-route-id="@item.Id">
+                                        <i class="far fa-edit text-white"></i>
+                                    </a>
+                                    <a class="btn btn-danger btn-circle ml-1" role="button" asp-action="Remove" asp-route-id="@item.Id">
+                                        <i class="fas fa-trash text-white"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td>
+                                <strong>Data utworzenia</strong>
+                            </td>
+                            <td>
+                                <strong>Email użytkownika</strong>
+                            </td>
+                            <td>
+                                <strong>Nazwa sali</strong>
+                            </td>
+                            <td>
+                                <strong>Data</strong>
+                            </td>
+                            <td>
+                                <strong>Godzina od</strong>
+                            </td>
+                            <td>
+                                <strong>Godzina do</strong>
+                            </td>
+                            <td>
+                                <strong>Cena</strong>
+                            </td>
+                            <td>
+                                <strong>Akcja</strong>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

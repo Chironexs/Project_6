@@ -1,0 +1,40 @@
+﻿@model RoomBooking.MVC.Models.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_LayoutLogInUserHeader")
+
+<section class="dashboard-section">
+    <div class="container pt-4 pb-4">
+        <div class="border-dashed view-height">
+            <div class="container w-25">
+                <form asp-controller="Account" asp-action="Login" method="post" class="padding-small text-center">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <h1 class="text-color-darker" style="color: rgb(0, 0, 0); margin-top: 100px;">Logowanie</h1>
+                    <div class="form-group">
+                        <label asp-for="Email">Email</label>
+                        <input asp-for="Email" type="email" class="form-control" id="email" name="email" placeholder="podaj email">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password">Hasło</label>
+                        <input asp-for="Password" type="password" class="form-control" id="password" name="password" placeholder="podaj hasło">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Zaloguj" class="btn btn-primary"/>
+                    </div>
+                </form>
+                <div class="text-center">
+                    <h5 style="color: rgb(0,0,0);">Jeżeli nie masz konta<br></h5>
+                    <a asp-controller="Account" asp-action="Register" class="small" style="font-size: 30px; color: rgb(0,102,255);">
+                        Zarejestruj się!
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,84 @@
+﻿@model RoomBooking.MVC.Models.DbModels.Room
+
+@{
+    ViewData["Title"] = "RoomEdit";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="container-fluid" style="margin-top: 40px;">
+    <button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button">
+        <i class="fas fa-bars"></i>
+    </button>
+    <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+        <div class="input-group">
+            <div class="input-group-append"></div>
+        </div>
+    </form>
+</div>
+
+<div class="col">
+    <div class="card shadow mb-3">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">Dodawanie nowej sali konferencyjnej</p>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Name">
+                                <strong>Nazwa sali</strong>
+                            </label>
+                            <input asp-for="Name" class="form-control" type="text" placeholder="Nazwa sali" style="height: 38px; width: 500px;">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Description">
+                                <strong>Opis sali</strong>
+                            </label>
+                            <input asp-for="Description" class="form-control" type="text" placeholder="Opis" style="height: 150px; width: 500px; max-width: 450px">
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Price">
+                                <strong>Cena za godzinę</strong>
+                            </label>
+                            <input asp-for="Price" class="form-control" type="text" placeholder="Cena" style="height: 38px; width: 500px;">
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Url">
+                                <strong>Ścieżka URL zdjęcia</strong>
+                            </label>
+                            <input asp-for="Url" class="form-control" type="text" placeholder="Ścieżka do zdjęcia" style="height: 38px; width: 500px;">
+                            <span asp-validation-for="Url" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-sm" type="submit">Zapisz zmiany</button>
+                </div>
+            </form>
+            <div>
+                <a asp-action="AdminList">Powrót do listy</a>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow"></div>
+</div>
+

@@ -1,0 +1,17 @@
+﻿@if (!string.IsNullOrEmpty(ViewData["Error"].ToString()))
+{
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">x</button>
+        <strong>Błąd! </strong>
+        @ViewData["Error"]
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(ViewData["Success"].ToString()))
+{
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">x</button>
+        <strong>Sukces! </strong>
+        @ViewData["Success"]
+    </div>
+}

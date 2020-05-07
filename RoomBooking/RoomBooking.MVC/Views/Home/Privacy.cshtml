@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy.</p>
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        <div>Użytkownik Zalogowany.</div>
+    </p>
+
+}
+else
+{
+    <div>Użytkownik Niezalogowany.</div>
+}
+
+@if (User.IsInRole("Admin"))
+{
+    <div>Ma rolę admin.</div>
+}
+else
+{
+    <div>Nie ma roli admin.</div>
+}
+@if (User.IsInRole("User"))
+{
+    <div>Ma rolę user.</div>
+}
+else
+{
+    <div>Nie ma roli user </div>
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <h4>@User.Identity.Name.ToString()</h4>
+}

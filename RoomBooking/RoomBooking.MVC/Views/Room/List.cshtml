@@ -1,0 +1,37 @@
+﻿@model IList<RoomBooking.MVC.Models.DbModels.Room>
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_LayoutLogInUserHeader")
+
+<section id="portfolio" class="bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="text-uppercase section-heading" style="margin-top: 20px;">Dostępne Sale konferencyjne</h2>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 40px;">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-sm-6 col-md-4 portfolio-item">
+                    <a class="portfolio-link" data-toggle="modal">
+                        <div class="portfolio-hover"></div>
+                        <img class="img-fluid" src="/@Html.DisplayFor(modelItem => item.Url)">
+
+                    </a>
+                    <div class="portfolio-caption" style="margin-top: 10px;">
+                        <h3> @Html.DisplayFor(modelItem => item.Name)</h3>
+                        <p class="text-muted"> @Html.DisplayFor(modelItem => item.Description)</p>
+                        <p class="text-muted" style="color: blue">Cena za godzinę: @Html.DisplayFor(modelItem => item.Price) zł</p>
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

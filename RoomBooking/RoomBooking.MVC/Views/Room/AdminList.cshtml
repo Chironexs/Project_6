@@ -1,0 +1,111 @@
+﻿@model IEnumerable<RoomBooking.MVC.Models.DbModels.Room>
+
+@{
+    ViewData["Title"] = "RoomList";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div id="content-1">
+    <div class="container-fluid" style="margin-top: 40px;">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <p class="text-primary m-0 font-weight-bold">
+                    <strong>Dodaj nową salę&nbsp;</strong>
+                    <a asp-controller="Room" asp-action="Add" class="btn btn-info btn-circle ml-1" role="button">
+                        <i class="fas fa-plus text-white"></i>
+                    </a>
+                <p class="text-primary m-0 font-weight-bold">
+                    Lista sal konferencyjnych<br>
+                </p>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 text-nowrap">
+                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                            <label>
+                                Show&nbsp;
+                                <select class="form-control form-control-sm custom-select custom-select-sm">
+                                    <option value="10" selected="">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>&nbsp;
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-md-right dataTables_filter" id="dataTable_filter">
+                            <label>
+                                <input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                    <table class="table dataTable my-0" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>Nazwa</th>
+                                <th>Opis</th>
+                                <th>Cena</th>
+                                <th>Link</th>
+                                <th>Akcja</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Price)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Url)
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-info btn-circle ml-1" role="button" asp-action="Detail" asp-route-id="@item.Id">
+                                            <i class="fas fa-info-circle text-white"></i>
+                                        </a>
+                                        <a class="btn btn-warning btn-circle ml-1" role="button" asp-action="Edit" asp-route-id="@item.Id">
+                                            <i class="far fa-edit text-white"></i>
+                                        </a>
+                                        <a class="btn btn-danger btn-circle ml-1" role="button" asp-action="Remove" asp-route-id="@item.Id">
+                                            <i class="fas fa-trash text-white"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>
+                                    <strong>Nazwa</strong>
+                                </td>
+                                <td>
+                                    <strong>Opis</strong>
+                                </td>
+                                <td>
+                                    <strong>Cena</strong>
+                                </td>
+                                <td>
+                                    <strong>Link</strong>
+                                </td>
+                                <td>
+                                    <strong>Akcja</strong>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+﻿@model IList<RoomBooking.MVC.Models.DbModels.Booking>
+@{
+    ViewData["Title"] = "Chart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Chart</h1>
+
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <canvas id="myChart" style="height: 300px;"></canvas>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/chart.js/Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+
+    <script type="text/javascript">
+        var chartModel = @Json.Serialize(Model);
+        var labels = chartModel.map(function (x) { return moment(x.date).format('YYYY-MM-DD') });
+        var data = chartModel.map(function (x) { return x.totalPrice });
+
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx,
+            {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Całkowity przychód',
+                            data: data,
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [
+                            {
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }
+                        ]
+                    },
+                    legend: {
+                        display:false
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+    </script>
+}

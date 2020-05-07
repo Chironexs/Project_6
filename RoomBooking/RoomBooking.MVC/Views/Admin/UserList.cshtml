@@ -1,0 +1,103 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+@{
+    ViewData["Title"] = "ListOfUser";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div id="content-1">
+
+    <div class="container-fluid" style="margin-top: 40px;">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 text-nowrap">
+                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                            <label>
+                                Show&nbsp;
+                                <select class="form-control form-control-sm custom-select custom-select-sm">
+                                    <option value="10" selected="">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>&nbsp;
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-md-right dataTables_filter" id="dataTable_filter">
+                            <label>
+                                <input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                    <table class="table dataTable my-0" id="dataTable">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Akcja</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => user.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => user.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => user.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => user.PhoneNumber)
+                                </td>
+                                <td>
+                                    <a class="btn btn-info btn-circle ml-1" role="button" asp-action="Detail" asp-route-id="@user.Id">
+                                        <i class="fas fa-info-circle text-white"></i>
+                                    </a>
+                                    <a class="btn btn-warning btn-circle ml-1" role="button" asp-action="Edit" asp-route-id="@user.Id">
+                                        <i class="far fa-edit text-white"></i>
+                                    </a>
+                                    <a class="btn btn-danger btn-circle ml-1" role="button" asp-action="Remove" asp-route-id="@user.Id">
+                                        <i class="fas fa-trash text-white"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td>
+                                <strong>ID</strong>
+                            </td>
+                            <td>
+                                <strong>Email</strong>
+                            </td>
+                            <td>
+                                <strong>Name</strong>
+                            </td>
+                            <td>
+                                <strong>Phone</strong>
+                            </td>
+                            <td>
+                                <strong>Akcja</strong>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

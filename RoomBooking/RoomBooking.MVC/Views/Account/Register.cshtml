@@ -1,0 +1,71 @@
+﻿@model RoomBooking.MVC.Models.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.Partial("_LayoutLogInUserHeader")
+
+
+<section class="dashboard-section">
+    <div class="container pt-4 pb-4">
+        <div class="border-dashed view-height">
+            <div class="container w-25">
+                <form asp-controller="Account" asp-action="Register" method="post" class="padding-small text-center">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <h1 class="text-color-darker" style="color: rgb(0, 0, 0); margin-top: 100px;">Rejestracja</h1>
+                    <div class="form-group">
+                        <label asp-for="Email">Email</label>
+                        <input asp-for="Email" type="email" class="form-control" id="email" name="email" placeholder="podaj email">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FirstName">Imię</label>
+                        <input asp-for="FirstName" type="text" class="form-control" id="firstname" name="firstname" placeholder="podaj imię">
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName">Nazwisko</label>
+                        <input asp-for="LastName" type="text" class="form-control" id="lastname" name="lastname" placeholder="podaj nazwisko">
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address">Adres</label>
+                        <input asp-for="Address" type="text" class="form-control" id="address" name="address" placeholder="podaj adres">
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ZipCode">Kod pocztowy</label>
+                        <input asp-for="ZipCode" type="text" class="form-control" id="zipcode" name="zipcode" placeholder="podaj kod pocztowy">
+                        <span asp-validation-for="ZipCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber">Telefon</label>
+                        <input asp-for="PhoneNumber" type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="podaj numer telefonu">
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password">Hasło</label>
+                        <input asp-for="Password" type="password" class="form-control" id="password" name="password" placeholder="podaj hasło">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RepeatPassword">Powtórz hasło</label>
+                        <input asp-for="RepeatPassword" type="password" class="form-control" id="repeatpassword" name="repeatpassword" placeholder="powtórz hasło">
+                        <span asp-validation-for="RepeatPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Zarejestruj" class="btn btn-primary"/>
+                    </div>
+                </form>
+                <div class="text-center">
+                    <h5 style="color: rgb(0, 0, 0);">Jeżeli masz już konto<br></h5>
+                    <a asp-controller="Account" asp-action="Login" class="small" style="font-size: 30px; color: rgb(0, 102, 255);">
+                        Zaloguj się!
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

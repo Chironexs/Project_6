@@ -1,0 +1,38 @@
+﻿<nav class="navbar navbar-light navbar-expand-md navbar navbar-expand-lg fixed-top" id="mainNav-1" style="color: rgb(0, 0, 0); background-color: #000000;">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" asp-controller="Home" asp-action="Index" style="color: rgba(255, 255, 255, 0.9); font-family: Cabin, sans-serif;">STRONA GŁÓWNA</a>
+        <button data-toggle="collapse" class="navbar-toggler navbar-toggler-right" data-target="#navbarResponsive-1"type="button" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" value="Menu">
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive-1" style="color: rgb(255, 255, 255);">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item nav-link js-scroll-trigger" role="presentation">
+                    <a class="nav-link js-scroll-trigger" asp-controller="Room" asp-action="List" style="color: #ffffff; font-family: Cabin, sans-serif;">LISTA SAL</a>
+                </li>
+                <li class="nav-item nav-link js-scroll-trigger" role="presentation">
+                    <a class="nav-link js-scroll-trigger" asp-controller="Booking" asp-action="Calendar" style="color: #ffffff; font-family: Cabin, sans-serif;">KALENDARZ</a>
+                </li>
+                <li class="nav-item nav-link js-scroll-trigger" role="presentation">
+                    <a class="nav-link js-scroll-trigger" asp-controller="Booking" asp-action="Add" style="color: #ffffff; font-family: Cabin, sans-serif;">NOWA REZERWACJA</a>
+                </li>
+
+                <li class="nav-item nav-link js-scroll-trigger" role="presentation">
+                    <a class="nav-link js-scroll-trigger" asp-controller="Booking" asp-action="List" style="color: #ffffff; font-family: Cabin, sans-serif;">ZARZĄDZAJ REZERWACJĄ</a>
+                </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item nav-link js-scroll-trigger" role="presentation">
+                        <a class="nav-link js-scroll-trigger" asp-controller="Account" asp-action="LogOut" style="color: #ffffff; font-family: Cabin, sans-serif;">WYLOGUJ</a>
+
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item nav-link js-scroll-trigger" role="presentation">
+                        <a class="nav-link js-scroll-trigger" asp-controller="Account" asp-action="Login" style="color: #ffffff; font-family: Cabin, sans-serif;">LOGOWANIE</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
