@@ -14,6 +14,7 @@ namespace RoomBooking.MVC.Services.Interface
         IList<Booking> GetAllToalPrice();
         IList<Booking> GetStartDate(); //
         IList<Booking> GetAll();
+        IList<Booking> GetRoomBookings(int roomId);
         bool Update(Booking room);
         bool Delete(int id);
         bool IsOccupied( int roomId, DateTime newStartTime, DateTime newEndTime);

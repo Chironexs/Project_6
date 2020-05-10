@@ -9,16 +9,19 @@
 
 @Html.Partial("_LayoutLogInUserHeader")
 
-<div id="content-1">S
+
+
+<div id="content-1">
     <div class="col" style="margin-top: 100px;">
         <div class="card shadow mb-3">
             <div class="card-header py-3">
                 <p class="text-primary m-0 font-weight-bold" style="color: rgb(0, 0, 0);">Edycja rezerwacji</p>
             </div>
+            @Html.Partial("_ViewData")
             <div class="card-body">
                 <form asp-controller="Booking" asp-action="Edit" metod="post">
                     <div asp-validation-summary="All" class="text-danger"></div>
-                    <input type="hidden" asp-for="booking.Id"/>
+                    <input type="hidden" asp-for="booking.Id" />
 
                     <div class="form-row">
                         <div class="col">
@@ -64,19 +67,20 @@
                                 <select asp-for="booking.StarTime" asp-items="Model.ListOfTimeIntervals" class="form-control">
 
                                     @* <option value="@Model.booking.StarTime" disabled selected> @String.Format("{0:HH:mm}", Model.booking.StarTime)    *@
-                                    <option value="@Model.booking.StarTime" selected> @String.Format("{0:HH:mm}", Model.booking.StarTime)   
-                                        
+                                    <option value="@Model.booking.StarTime" selected>
+                                        @String.Format("{0:HH:mm}", Model.booking.StarTime)
+
 
                                         @* <input type="hidden" asp-for="booking.StarTime" class="form-control"></input> *@
-                                        </option>
-@*                                     @foreach (var item in Model.ListOfTimeIntervals) *@
-@*                                     { *@
-@*                                         if (item.Value == Model.booking.StarTime.ToString("HH:mm")) *@
-@*                                         { *@
-@*                                             <option asp-items="@Model.booking.StarTime" value="@Model.booking.StarTime" type="hidden" disabled selected>@Model.booking.StarTime</option> *@
-@*                                             <input type="hidden"  asp-for="booking.StarTime" class="form-control"> *@
-@*                                         } *@
-@*                                     } *@
+                                    </option>
+                                    @*                                     @foreach (var item in Model.ListOfTimeIntervals) *@
+                                    @*                                     { *@
+                                    @*                                         if (item.Value == Model.booking.StarTime.ToString("HH:mm")) *@
+                                    @*                                         { *@
+                                    @*                                             <option asp-items="@Model.booking.StarTime" value="@Model.booking.StarTime" type="hidden" disabled selected>@Model.booking.StarTime</option> *@
+                                    @*                                             <input type="hidden"  asp-for="booking.StarTime" class="form-control"> *@
+                                    @*                                         } *@
+                                    @*                                     } *@
                                     <span asp-validation-for="StarTime" class="text-danger"></span>
                                 </select>
                             </div>

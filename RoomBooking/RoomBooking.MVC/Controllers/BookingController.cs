@@ -30,6 +30,8 @@ namespace RoomBooking.MVC.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            ViewData["Error"] = "";
+            ViewData["Success"] = "";
             BookingViewModel bookingViewModel = new BookingViewModel();
 
             bookingViewModel.Bookings = bookingService.GetAll();
@@ -37,13 +39,11 @@ namespace RoomBooking.MVC.Controllers
 
             string dateTime = DateTime.Now.ToString();
             string createdDate = Convert.ToDateTime(dateTime).ToString("yyyy-MM-dd HH:mm");
-            bookingViewModel.StarTime =
-                DateTime.ParseExact(createdDate, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+            bookingViewModel.StarTime = DateTime.ParseExact(createdDate, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
 
             string dateTimePlusDay = DateTime.Now.AddDays(1).ToString();
             string createdDatePlusDay = Convert.ToDateTime(dateTimePlusDay).ToString("yyyy-MM-dd");
-            bookingViewModel.Date =
-                DateTime.ParseExact(createdDatePlusDay, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+            bookingViewModel.Date = DateTime.ParseExact(createdDatePlusDay, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
 
             return View(bookingViewModel);
         }
@@ -53,6 +53,7 @@ namespace RoomBooking.MVC.Controllers
         public IActionResult Add(Booking booking)
         {
             BookingViewModel bookingViewModel = new BookingViewModel();
+            bookingViewModel.Rooms = roomService.GetAll();
             if (ModelState.IsValid)
             {
                 if (booking.EndTime > booking.StarTime)
@@ -71,27 +72,29 @@ namespace RoomBooking.MVC.Controllers
                     var StartTimeConvert = Convert.ToDateTime($"{Date} {StartTime}").ToString("yyyy-MM-dd HH:mm");
                     var EndTimeConvert = Convert.ToDateTime($"{Date} {EndTime}").ToString("yyyy-MM-dd HH:mm");
 
-                    booking.StarTime = DateTime.ParseExact(StartTimeConvert, "yyyy-MM-dd HH:mm",
-                        CultureInfo.InvariantCulture);
-                    booking.EndTime =
-                        DateTime.ParseExact(EndTimeConvert, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+                    booking.StarTime = DateTime.ParseExact(StartTimeConvert, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+                    booking.EndTime = DateTime.ParseExact(EndTimeConvert, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
 
                     bookingViewModel.StarTime = booking.StarTime;
                     bookingViewModel.EndTime = booking.EndTime;
                     bookingViewModel.Date = booking.Date;
-
+                    
                     if (!(booking.StarTime >= DateTime.Now))
                     {
-                        ModelState.AddModelError("", "Data jest z przeszłości");
+                        // ModelState.AddModelError("", "Data jest z przeszłości");
                         // BadRequest(ModelState);
-                        return RedirectToAction("Add");
+                        ViewData["Success"] = "";
+                        ViewData["Error"] = "Nie można dodać rezerwacji z datą w przeszłości";
+                        return View("Add", bookingViewModel);
                     }
 
                     var checkIsOccupied = bookingService.IsOccupied(booking.RoomId, booking.StarTime, booking.EndTime);
                     if (checkIsOccupied)
                     {
-                        ModelState.AddModelError("", "Termin jest zajęty");
-                        return RedirectToAction("Add");
+                        // ModelState.AddModelError("", "Wybrany termin jest już zajęty");
+                        ViewData["Success"] = "";
+                        ViewData["Error"] = "Wybrany termin jest już zajęty";
+                        return View("Add", bookingViewModel);
                     }
 
                     TimeSpan timeDifference = booking.EndTime - booking.StarTime;
@@ -101,13 +104,17 @@ namespace RoomBooking.MVC.Controllers
 
                     bookingService.Create(booking);
 
-                    return RedirectToAction("Add");
+                    ViewData["Success"] = "Dodano nową rezerwację";
+                    ViewData["Error"] = "";
+                    return View("Add", bookingViewModel);
                 }
-
-                return RedirectToAction("Add");
+                ViewData["Success"] = "";
+                ViewData["Error"] = "Niepoprawna godzina zakończenia";
+                return View("Add", bookingViewModel);
             }
-
-            return RedirectToAction("Add");
+            ViewData["Success"] = "";
+            ViewData["Error"] = "Niepoprawne dane";
+            return View("Add", bookingViewModel);
         }
 
         // [Authorize(Roles = "Admin")]
@@ -128,6 +135,8 @@ namespace RoomBooking.MVC.Controllers
         [HttpGet]
         public IActionResult List()
         {
+            ViewData["Error"] = "";
+            ViewData["Success"] = "";
             var userId = userManager.GetUserId(HttpContext.User);
             BookingViewModel bookingViewModel = new BookingViewModel
             {
@@ -141,6 +150,8 @@ namespace RoomBooking.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            ViewData["Error"] = "";
+            ViewData["Success"] = "";
             BookingViewModel bookingViewModel = new BookingViewModel();
             IdentityUser identityUser = new IdentityUser();
             identityUser.Id = userManager.GetUserId(HttpContext.User);
@@ -165,6 +176,11 @@ namespace RoomBooking.MVC.Controllers
             var userID = bookingService.Get(bookingViewModel.Id).UserId;
             if (userID == identityUser.Id || await userManager.IsInRoleAsync(identityUser, "Admin"))
             {
+                var bookingId = bookingViewModel.booking.Id;
+                var bookingObject = bookingService.Get(bookingId);
+                bookingViewModel.Rooms = roomService.GetAll();
+                bookingViewModel.room = roomService.Get(bookingObject.RoomId);
+
                 if (ModelState.IsValid)
                 {
                     Booking booking = new Booking();
@@ -191,30 +207,38 @@ namespace RoomBooking.MVC.Controllers
                         var checkIsOccupied = bookingService.IsOccupiedEditExisting(booking.Id, booking.RoomId, booking.StarTime, booking.EndTime);
                         if (checkIsOccupied)
                         {
-                            ModelState.AddModelError("", "Termin jest zajęty");
-                            return RedirectToAction("Add");
+                            ViewData["Success"] = "";
+                            ViewData["Error"] = "Wybrany termin jest już zajęty";
+                            return View("Edit", bookingViewModel);
                         }
 
-                        // booking.UserId = bookingViewModel.booking.UserId;
-                        booking.UserId = userID;
+                        if (!(booking.StarTime >= DateTime.Now))
+                        {
+                            ViewData["Success"] = "";
+                            ViewData["Error"] = "Nie można dodać rezerwacji z datą w przeszłości";
+                            return View("Edit", bookingViewModel);
+                        }
 
                         TimeSpan timeDifference = booking.EndTime - booking.StarTime;
                         var hours = (decimal) timeDifference.TotalHours;
                         var room = roomService.Get(booking.RoomId);
                         booking.TotalPrice = room.Price * hours;
 
-                        if (ModelState.IsValid)
-                        {
-                            bookingService.Update(booking);
-                        }
-
+                        booking.UserId = userID;
+                        bookingService.Update(booking);
+                        
+                        ViewData["Success"] = "Zmieniono rezerwację";
+                        ViewData["Error"] = "";
                         return RedirectToAction("List");
                     }
-
-                    return RedirectToAction("List");
+                    ViewData["Success"] = "";
+                    ViewData["Error"] = "Niepoprawna godzina zakończenia";
+                    return View("Edit", bookingViewModel);
                 }
 
-                return RedirectToAction("List");
+                ViewData["Success"] = "";
+                ViewData["Error"] = "Niepoprawne dane";
+                return View("Edit", bookingViewModel);
             }
 
             return RedirectToAction("List");
@@ -236,7 +260,7 @@ namespace RoomBooking.MVC.Controllers
             if (bookingService.Get(id).UserId == userManager.GetUserId(HttpContext.User))
             {
                 bookingService.Delete(id);
-                return RedirectToAction("List");
+               // return RedirectToAction("List");
             }
 
             IdentityUser identityUser = new IdentityUser();
@@ -251,34 +275,71 @@ namespace RoomBooking.MVC.Controllers
             return RedirectToAction("List");
         }
 
+
+        // do widoku kalendarza 
         [HttpGet]
         public IActionResult Calendar()
         {
-            //return new JsonResult(lst);
-
-            //return Ok(lst);
-            return View();
+            BookingViewModel bookingViewModel = new BookingViewModel();
+            bookingViewModel.Rooms = roomService.GetAll();
+            return View(bookingViewModel);
         }
 
-        [HttpGet]
-        public IActionResult Calendar1()
+        [HttpPost]
+        public IActionResult Calendar(int id)
         {
             BookingViewModel bookingViewModel = new BookingViewModel();
+            bookingViewModel.Bookings = bookingService.GetRoomBookings(id);
 
-            bookingViewModel.Bookings = bookingService.GetAll();
+            Booking booking = new Booking();
+
+            return View(bookingViewModel);
+        }
+
+
+        // GET
+        [Route("/[controller]/[action]/{id}")]
+        [HttpGet("{id}")]
+        public IActionResult CalendarGet(int id)
+        {
+            BookingViewModel bookingViewModel = new BookingViewModel();
             bookingViewModel.Rooms = roomService.GetAll();
-            List<object> lst = new List<object>();
+            if (id == 0)
+            {
+                bookingViewModel.Bookings = bookingService.GetAll();
+                List<object> listAll = new List<object>();
+                foreach (var item in bookingViewModel.Bookings)
+                {
+                    Booking booking = new Booking();
+                    booking.Id = item.Id;
+                    booking.StarTime = item.StarTime;
+                    booking.EndTime = item.EndTime;
+                    booking.RoomId = item.RoomId;
+                    booking.UserId = item.Room.Name;
+                    booking.RoomId = item.Room.Id;
+                    //                booking.Room = item.Room;
+                    //                booking.Room.Name = item.Room.Name;
+                    listAll.Add(booking);
+                }
+                return Ok(listAll);
+            }
+
+            bookingViewModel.Bookings = bookingService.GetRoomBookings(id);
+            List<object> listId = new List<object>();
             foreach (var item in bookingViewModel.Bookings)
             {
                 Booking booking = new Booking();
+                booking.Id = item.Id;
                 booking.StarTime = item.StarTime;
                 booking.EndTime = item.EndTime;
                 booking.RoomId = item.RoomId;
                 booking.UserId = item.Room.Name;
-                lst.Add(booking);
+                booking.RoomId = item.Room.Id;
+                //                booking.Room = item.Room;
+                //                booking.Room.Name = item.Room.Name;
+                listId.Add(booking);
             }
-            
-            return Ok(lst);
+            return Ok(listId);
         }
 
         [NonAction]

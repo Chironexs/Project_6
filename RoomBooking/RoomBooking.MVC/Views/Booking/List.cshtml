@@ -9,66 +9,66 @@
 @Html.Partial("_LayoutLogInUserHeader")
 
 <div id="content-1">
-
     <div class="col" style="margin-top: 100px;">
         <div class="card shadow mb-3">
+            @Html.Partial("_ViewData")
             <div class="card-body">
                 <table class="table">
                     <thead>
-                    <tr>
-                        <th>
-                            <strong>Nazwa sali</strong>
-                        </th>
-                        <th>
-                            <strong>Data rezerwacji</strong>
-                        </th>
-                        <th>
-                            <strong>Godzina rozpoczęcia</strong>
-                        </th>
-                        <th>
-                            <strong>Godzina zakończenia</strong>
-                        </th>
-                        <th>
-                            <strong>Całkowita cena</strong>
-                        </th>
-                        <th></th>
-                    </tr>
+                        <tr>
+                            <th>
+                                <strong>Nazwa sali</strong>
+                            </th>
+                            <th>
+                                <strong>Data rezerwacji</strong>
+                            </th>
+                            <th>
+                                <strong>Godzina rozpoczęcia</strong>
+                            </th>
+                            <th>
+                                <strong>Godzina zakończenia</strong>
+                            </th>
+                            <th>
+                                <strong>Całkowita cena</strong>
+                            </th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tbody>
 
-                    @foreach (var item in Model.Bookings)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Room.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Date)
-                            </td>
-                            <td>
-                                @String.Format("{0:HH:mm}", item.StarTime)
+                        @foreach (var item in Model.Bookings)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Room.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @String.Format("{0:HH:mm}", item.StarTime)
 
-                            </td>
-                            <td>
-                                @String.Format("{0:HH:mm}", item.EndTime)
-                            </td>
+                                </td>
+                                <td>
+                                    @String.Format("{0:HH:mm}", item.EndTime)
+                                </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TotalPrice)
-                            </td>
-                            <td>
-                                <a class="btn btn-info btn-circle ml-1" role="button" asp-action="Detail" asp-route-id="@item.Id">
-                                    <i class="fas fa-info-circle text-white"></i>
-                                </a>
-                                <a class="btn btn-warning btn-circle ml-1" role="button" asp-action="Edit" asp-route-id="@item.Id">
-                                    <i class="far fa-edit text-white"></i>
-                                </a>
-                                <a class="btn btn-danger btn-circle ml-1" role="button" asp-action="Remove" asp-route-id="@item.Id">
-                                    <i class="fas fa-trash text-white"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    }
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                                </td>
+                                <td>
+                                    <a class="btn btn-info btn-circle ml-1" role="button" asp-action="Detail" asp-route-id="@item.Id">
+                                        <i class="fas fa-info-circle text-white"></i>
+                                    </a>
+                                    <a class="btn btn-warning btn-circle ml-1" role="button" asp-action="Edit" asp-route-id="@item.Id">
+                                        <i class="far fa-edit text-white"></i>
+                                    </a>
+                                    <a class="btn btn-danger btn-circle ml-1" role="button" asp-action="Remove" asp-route-id="@item.Id">
+                                        <i class="fas fa-trash text-white"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
 
                     </tbody>
                 </table>

@@ -39,6 +39,10 @@ namespace RoomBooking.MVC.Services
         {
             return context.Bookings.Include(c => c.User).OrderBy(a => a.Date).ToList();
         }
+        public IList<Booking> GetRoomBookings(int roomId)
+        {
+            return context.Bookings.Where(c => c.RoomId == roomId).ToList();
+        }
 
         public IList<Booking> GetAllToalPrice()
         {
