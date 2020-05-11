@@ -22,7 +22,9 @@
                     <div class="form-row">
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="RoomId"> <strong>Wybierz salę</strong> </label>
+                                <label asp-for="RoomId">
+                                    <strong>Wybierz salę</strong>
+                                </label>
                                 <select asp-for="RoomId" class="form-control" id="chooseRoom">
                                     @foreach (var room in Model.Rooms)
                                     {
@@ -37,7 +39,9 @@
                     <div class="form-row">
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="Date" class="control-label"> <strong>Data</strong></label>
+                                <label asp-for="Date" class="control-label">
+                                    <strong>Data</strong>
+                                </label>
                                 <input asp-for="Date" class="form-control">
                                 <span asp-validation-for="Date" class="text-danger"></span>
                             </div>
@@ -45,39 +49,65 @@
                         <div class="col"></div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label asp-for="StarTime"> <strong>Godzina rozpoczęcia</strong> </label>
-                                <select asp-for="StarTime" asp-items="Model.ListOfTimeIntervals" class="form-control">
-                                    <span asp-validation-for="StarTime" class="text-danger"></span>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col"></div>
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="AllDay" type="checkbox" id="invoice"> Rezerwacja całodniowa
+                        </label>
                     </div>
 
-                    <div class="form-row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label asp-for="EndTime"> <strong>Godzina zakończenia</strong> </label>
-                                <select asp-for="EndTime" asp-items="Model.ListOfTimeIntervals" class="form-control">
-                                    <span asp-validation-for="EndTime" class="text-danger"></span>
-                                </select>
+                    <div id="invoiceData">
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label asp-for="StarTime">
+                                        <strong>Godzina rozpoczęcia</strong>
+                                    </label>
+                                    <select asp-for="StarTime" asp-items="Model.ListOfTimeIntervals" class="form-control">
+                                        <span asp-validation-for="StarTime" class="text-danger"></span>
+                                    </select>
+                                </div>
                             </div>
+                            <div class="col"></div>
                         </div>
-                        <div class="col"></div>
-                    </div>
 
-                    <div class="form-group">
-                        <button class="btn btn-primary btn-sm" type="submit">Dodaj rezerwację</button>
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label asp-for="EndTime">
+                                        <strong>Godzina zakończenia</strong>
+                                    </label>
+                                    <select asp-for="EndTime" asp-items="Model.ListOfTimeIntervals" class="form-control">
+                                        <span asp-validation-for="EndTime" class="text-danger"></span>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col"></div>
+                        </div>
                     </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-sm" type="submit">Dodaj rezerwację</button>
+                        </div>
                 </form>
             </div>
         </div>
         <div class="card shadow"></div>
     </div>
 </div>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        document.querySelector('#invoice').addEventListener('change',
+            function() {
+                if (this.checked)
+                    document.querySelector('#invoiceData').className += "invisible";
+                else {
+                    document.querySelector('#invoiceData').classList.remove("invisible");
+                }
+            });
+    </script>
+}
 
 @* *@
 @* *@

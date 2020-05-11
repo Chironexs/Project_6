@@ -44,6 +44,7 @@ namespace RoomBooking.MVC.Controllers
             string dateTimePlusDay = DateTime.Now.AddDays(1).ToString();
             string createdDatePlusDay = Convert.ToDateTime(dateTimePlusDay).ToString("yyyy-MM-dd");
             bookingViewModel.Date = DateTime.ParseExact(createdDatePlusDay, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+            bookingViewModel.AllDay = "false";
 
             return View(bookingViewModel);
         }
@@ -56,14 +57,69 @@ namespace RoomBooking.MVC.Controllers
             bookingViewModel.Rooms = roomService.GetAll();
             if (ModelState.IsValid)
             {
+
+                if (booking.AllDay == "true")
+                {
+                    booking.UserId = userManager.GetUserId(HttpContext.User);
+
+                    string dateTime = DateTime.Now.ToString();
+                    string createdDate = Convert.ToDateTime(dateTime).ToString("yyyy-MM-dd HH:mm");
+                    booking.CreatedDateTime = DateTime.ParseExact(createdDate, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+
+                    var Date = Convert.ToDateTime(booking.Date).ToString("yyyy-MM-dd");
+
+                    var StartTimeConvert = Convert.ToDateTime($"{Date} 06:00").ToString("yyyy-MM-dd HH:mm");
+                    var EndTimeConvert = Convert.ToDateTime($"{Date} 22:00").ToString("yyyy-MM-dd HH:mm");
+
+                    booking.StarTime = DateTime.ParseExact(StartTimeConvert, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+                    booking.EndTime = DateTime.ParseExact(EndTimeConvert, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+
+                    bookingViewModel.StarTime = booking.StarTime;
+                    bookingViewModel.EndTime = booking.EndTime;
+                    bookingViewModel.Date = booking.Date;
+
+                    bookingViewModel.StarTime = booking.StarTime;
+                    bookingViewModel.EndTime = booking.EndTime;
+                    bookingViewModel.Date = booking.Date;
+
+                    if (!(booking.StarTime >= DateTime.Now))
+                    {
+                        // ModelState.AddModelError("", "Data jest z przeszłości");
+                        // BadRequest(ModelState);
+                        ViewData["Success"] = "";
+                        ViewData["Error"] = "Nie można dodać rezerwacji z datą w przeszłości";
+                        return View("Add", bookingViewModel);
+                    }
+
+                    var checkIsOccupied = bookingService.IsOccupied(booking.RoomId, booking.StarTime, booking.EndTime);
+                    if (checkIsOccupied)
+                    {
+                        // ModelState.AddModelError("", "Wybrany termin jest już zajęty");
+                        ViewData["Success"] = "";
+                        ViewData["Error"] = "Wybrany termin jest już zajęty";
+
+                        return View("Add", bookingViewModel);
+                    }
+
+                    TimeSpan timeDifference = booking.EndTime - booking.StarTime;
+                    var hours = (decimal) timeDifference.TotalHours;
+                    var room = roomService.Get(booking.RoomId);
+                    booking.TotalPrice = room.Price * hours;
+
+                    bookingService.Create(booking);
+
+                    ViewData["Success"] = "Dodano nową rezerwację";
+                    ViewData["Error"] = "";
+                    bookingViewModel.AllDay = "true";
+                    return View("Add", bookingViewModel);
+                }
                 if (booking.EndTime > booking.StarTime)
                 {
                     booking.UserId = userManager.GetUserId(HttpContext.User);
 
                     string dateTime = DateTime.Now.ToString();
                     string createdDate = Convert.ToDateTime(dateTime).ToString("yyyy-MM-dd HH:mm");
-                    booking.CreatedDateTime =
-                        DateTime.ParseExact(createdDate, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+                    booking.CreatedDateTime = DateTime.ParseExact(createdDate, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
 
                     var Date = Convert.ToDateTime(booking.Date).ToString("yyyy-MM-dd");
                     var StartTime = Convert.ToDateTime(booking.StarTime).ToString("HH:mm");

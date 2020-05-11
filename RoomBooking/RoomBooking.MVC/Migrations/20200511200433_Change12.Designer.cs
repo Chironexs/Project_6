@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RoomBooking.MVC.Context;
 
 namespace RoomBooking.MVC.Migrations
 {
     [DbContext(typeof(RoomBookingContext))]
-    partial class RoomBookingContextModelSnapshot : ModelSnapshot
+    [Migration("20200511200433_Change12")]
+    partial class Change12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

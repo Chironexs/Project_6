@@ -21,7 +21,7 @@ namespace RoomBooking.MVC.Models.DbModels
 
         [Required] public DateTime EndTime { get; set; }
         public DateTime CreatedDateTime { get; set; }
-        public bool? AllDay { get; set; }
+        public string AllDay { get; set; }
         public decimal TotalPrice { get; set; }
     }
 }
