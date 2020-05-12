@@ -1,0 +1,58 @@
+﻿@using System.Globalization
+@using System.Linq
+@model RoomBooking.MVC.Models.ViewModels.BookingViewModel
+
+@{
+    ViewData["Title"] = "ConfirmationOfAdding";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_LayoutLogInUserHeader")
+
+<div id="content-1">
+    <div class="col" style="margin-top: 100px;">
+        <div class="card shadow mb-3">
+            @* <div class="card-header py-3"> *@
+            @*     <p class="text-primary m-0 font-weight-bold" style="color: rgb(0, 0, 0);">Nowa rezerwacja</p> *@
+            @* </div> *@
+            @Html.Partial("_ViewData")
+
+            <section class="content">
+                <h2 class="text-uppercase text-center">Twoja rezerwacja</h2>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span>
+                            Nazwa sali konerencyjnej : @foreach (var item in Model.Rooms)
+                            {
+                                if (Model.RoomId == item.Id)
+                                {
+                                    @item.Name
+                                }
+                            }
+                        </span>
+                    </li>
+                    <li class="list-group-item">
+                        <span>Data : @Model.Date.ToString("dd-MM-yyy")</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span>Godzina rozpoczęcia : @Model.StarTime.ToString("HH:mm")</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span>Godzina zakończenia : @Model.EndTime.ToString("HH:mm")</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span>Cena : @Model.TotalPrice zł</span>
+                    </li>
+                </ul>
+                <p class="text-left">
+                    <div class="card-body">
+                        <a asp-controller="Booking" asp-action="Add" class="small" style="font-size: 10; color: rgb(0, 102, 255);">
+                            Dodaj kolejną rezerwację
+                        </a>
+                    </div>
+                </p>
+            </section>
+        </div>
+        <div class="card shadow"></div>
+    </div>
+</div>

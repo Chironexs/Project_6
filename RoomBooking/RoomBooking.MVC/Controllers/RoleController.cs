@@ -38,8 +38,22 @@ namespace RoomBooking.MVC.Controllers
                 await roleManager.CreateAsync(new IdentityRole("Admin"));
             }
 
-//            if (await userManager.FindByEmailAsync("user@user.pl") == null)
-//            {
+            if (await userManager.FindByEmailAsync("jan.nowak@wp.pl") == null)
+            {
+                User user = new User
+                {
+                    Email = "jan.nowak@wp.pl",
+                    UserName = "jan.nowak@wp.pl",
+                    FirstName = "Jan",
+                    LastName = "Nowak",
+                    PhoneNumber = "607829546",
+                    Address = "Złota 44, Warszawa",
+                    ZipCode = "00-700",
+
+                };
+                await userManager.CreateAsync(user, "QAZzaq123@");
+                await userManager.AddToRoleAsync(user, "User");
+
 //                IdentityUser identityUser = new IdentityUser
 //                {
 //                    UserName = "user@user.pl",
@@ -47,40 +61,28 @@ namespace RoomBooking.MVC.Controllers
 //                };
 //                await userManager.CreateAsync(identityUser, "User2020!");
 //                await userManager.AddToRoleAsync(identityUser, "User");
-//            }
-
-            if (await userManager.FindByEmailAsync("user1@test.pl") == null)
+            }
+            if (await userManager.FindByEmailAsync("karol@onet.pl") == null)
             {
+                //                IdentityUser identityUser = new IdentityUser
+                //                {
+                //                    UserName = "admin@admin.pl",
+                //                    Email = "admin@admin.pl",
+                //                };
+
                 User user = new User
                 {
-                    Email = "user1@test.pl",
-                    UserName = "user1@test.pl",
-                    FirstName = "Jan",
-                    LastName = "Kowalski",
-                    Address = "Złota 44, Warszawa",
-                    ZipCode = "00-700",
+                    Email = "karol@onet.pl",
+                    UserName = "karol@onet.pl",
+                    FirstName = "Karol",
+                    LastName = "Karolak",
+                    PhoneNumber = "607485656",
+                    Address = "Chmielna 4, Warszawa",
+                    ZipCode = "00-500",
 
                 };
-                await userManager.CreateAsync(user, "User2020!");
-                await userManager.AddToRoleAsync(user, "User");
-
-                IdentityUser identityUser = new IdentityUser
-                {
-                    UserName = "user@user.pl",
-                    Email = "user@user.pl",
-                };
-                await userManager.CreateAsync(identityUser, "User2020!");
-                await userManager.AddToRoleAsync(identityUser, "User");
-            }
-            if (await userManager.FindByEmailAsync("admin@admin.pl") == null)
-            {
-                IdentityUser identityUser = new IdentityUser
-                {
-                    UserName = "admin@admin.pl",
-                    Email = "admin@admin.pl",
-                };
-                await userManager.CreateAsync(identityUser, "Admin2020!");
-                await userManager.AddToRoleAsync(identityUser, "Admin");
+                await userManager.CreateAsync(user, "QAZzaq123@!");
+                await userManager.AddToRoleAsync(user, "Admin");
             }
 
             return RedirectToAction("Index", "Home");

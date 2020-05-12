@@ -15,13 +15,14 @@ namespace RoomBooking.MVC.Controllers
     {
         private readonly IBookingService bookingService;
         private readonly IRoomService roomService;
+        private readonly IUserService userService;
         private readonly UserManager<IdentityUser> userManager;
 
-        public AdminController(IBookingService _bookingService, IRoomService _roomService,
-            UserManager<IdentityUser> _userManager)
+        public AdminController(IBookingService _bookingService, IRoomService _roomService, IUserService _userService, UserManager<IdentityUser> _userManager)
         {
             bookingService = _bookingService;
             userManager = _userManager;
+            userService = _userService;
             roomService = _roomService;
         }
 
@@ -39,7 +40,9 @@ namespace RoomBooking.MVC.Controllers
         // użytkownicy
         public IActionResult UserList()
         {
-            return View(userManager.Users);
+            var userGetAll = userService.GetAll();
+            var userMenager = userManager.Users;
+            return View(userGetAll);
         }
 
         // do przeniesiena do index

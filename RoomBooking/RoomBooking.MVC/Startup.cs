@@ -23,7 +23,6 @@ namespace RoomBooking.MVC
             Configuration = configurationBuilder.Build();
         }
 
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<RoomBookingContext>(builder =>
@@ -31,17 +30,17 @@ namespace RoomBooking.MVC
                 builder.UseSqlServer(Configuration["ConnectionStrings"]);
             });
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<RoomBookingContext>();
+//            services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IRoomService, RoomService>();
-            services.AddScoped<IRoomService, RoomService>();
+//            services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IBookingService, BookingService>();
-            services.AddScoped<IBookingService, BookingService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
             services.AddMvc();
         }
-
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {

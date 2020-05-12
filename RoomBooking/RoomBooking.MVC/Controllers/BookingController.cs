@@ -84,8 +84,6 @@ namespace RoomBooking.MVC.Controllers
 
                     if (!(booking.StarTime >= DateTime.Now))
                     {
-                        // ModelState.AddModelError("", "Data jest z przeszłości");
-                        // BadRequest(ModelState);
                         ViewData["Success"] = "";
                         ViewData["Error"] = "Nie można dodać rezerwacji z datą w przeszłości";
                         return View("Add", bookingViewModel);
@@ -94,10 +92,8 @@ namespace RoomBooking.MVC.Controllers
                     var checkIsOccupied = bookingService.IsOccupied(booking.RoomId, booking.StarTime, booking.EndTime);
                     if (checkIsOccupied)
                     {
-                        // ModelState.AddModelError("", "Wybrany termin jest już zajęty");
                         ViewData["Success"] = "";
                         ViewData["Error"] = "Wybrany termin jest już zajęty";
-
                         return View("Add", bookingViewModel);
                     }
 
@@ -108,10 +104,14 @@ namespace RoomBooking.MVC.Controllers
 
                     bookingService.Create(booking);
 
+                    bookingViewModel.Rooms = roomService.GetAll();
+                    bookingViewModel.TotalPrice = booking.TotalPrice;
+                    bookingViewModel.RoomId = booking.RoomId;
+
                     ViewData["Success"] = "Dodano nową rezerwację";
                     ViewData["Error"] = "";
-                    bookingViewModel.AllDay = "true";
-                    return View("Add", bookingViewModel);
+                 
+                    return View("ConfirmationOfAdding", bookingViewModel);
                 }
                 if (booking.EndTime > booking.StarTime)
                 {
@@ -160,9 +160,13 @@ namespace RoomBooking.MVC.Controllers
 
                     bookingService.Create(booking);
 
+                    bookingViewModel.Rooms = roomService.GetAll();
+                    bookingViewModel.TotalPrice = booking.TotalPrice;
+                    bookingViewModel.RoomId = booking.RoomId;
+
                     ViewData["Success"] = "Dodano nową rezerwację";
                     ViewData["Error"] = "";
-                    return View("Add", bookingViewModel);
+                    return View("ConfirmationOfAdding", bookingViewModel);
                 }
                 ViewData["Success"] = "";
                 ViewData["Error"] = "Niepoprawna godzina zakończenia";
@@ -171,6 +175,12 @@ namespace RoomBooking.MVC.Controllers
             ViewData["Success"] = "";
             ViewData["Error"] = "Niepoprawne dane";
             return View("Add", bookingViewModel);
+        }
+        // [Authorize(Roles = "User")]
+        [HttpPost]
+        public IActionResult ConfirmationOfAdding(BookingViewModel bookingViewModel)
+        {
+            return View(bookingViewModel);
         }
 
         // [Authorize(Roles = "Admin")]
