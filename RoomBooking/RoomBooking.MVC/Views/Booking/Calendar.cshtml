@@ -8,22 +8,17 @@
 
 <div id="content-1">
     <div class="col" style="margin-top: 100px;">
-
         <div class="card shadow mb-3">
             <div class="row">
                 <div class="col-md-6 ml-auto mr-auto">
                     <div class="box box-primary">
                         <div class="box-body ">
-                            @* <select class="form-control"> *@
-                            @*     <option>Wszystkie </option> *@
-                            @*     <option>Sala 1</option> *@
-                            @*     <option>Sala 2</option> *@
-                            @* </select> *@
                             <div class="col">
                                 <div class="form-group">
                                     <label>
                                         <strong>Wybierz kalendarz sali</strong>
                                     </label>
+
                                     <select class="form-control" id="chooseRoom">
                                         <option value="" id="">Wybierz pożądaną salę lub wszystkie sale aby wyświetlić kalendarz</option>
                                         <option value="0" id="0">Wszystkie sale</option>
@@ -32,6 +27,12 @@
                                             <option value="@room.Id" id="@room.Id">@room.Name</option>
                                         }
                                     </select>
+                                    <p></p>
+                                    <div class="form-group">
+                                        <p></p>
+                                        <div id="div1"></div>
+                                        <input type="button" class="btn btn-primary btn-sm" id="button1" value="Odśwież"/>
+                                    </div>
                                 </div>
                             </div>
                             <div id="calendar"></div>
@@ -43,11 +44,11 @@
     </div>
 </div>
 
-
 @section scripts
 {
     <script type="text/javascript">
         $(document).ready(function() {
+
             $('#calendar').fullCalendar({
                 header:
                 {
@@ -91,6 +92,7 @@
                                 }
                             });
                         });
+
                 },
                 eventRender:
                     function(event, element) {
@@ -102,7 +104,13 @@
 
                 editable: false
             });
-            return true;
+
+        });
+        $(document).ready(function() {
+            $("#button1").click(function() {
+                $("#chooseRoom").load('@Url.Action("Calendar")');
+                window.location.reload();
+            });
         });
     </script>
 }

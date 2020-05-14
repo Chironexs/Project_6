@@ -34,7 +34,13 @@ namespace RoomBooking.MVC.Controllers
             adminViewModel.TotalIncome = bookingService.GetTotalIncome();
             adminViewModel.TotalNumberOfUsers = userManager.Users.Count();
             adminViewModel.TotalNumberOfRooms = roomService.GetTotalNumberOfRooms();
-            return View(adminViewModel);
+
+            var chart = bookingService.GetAllToalPrice();
+
+            adminViewModel.Booking = bookingService.GetAllToalPrice();
+
+           // return View(adminViewModel);
+            return View("Index", adminViewModel);
         }
 
         // użytkownicy
