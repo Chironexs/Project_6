@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RoomBooking.MVC.Models;
@@ -11,6 +12,7 @@ using RoomBooking.MVC.Models.DbModels;
 
 namespace RoomBooking.MVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         private readonly SignInManager<IdentityUser> signInManager;

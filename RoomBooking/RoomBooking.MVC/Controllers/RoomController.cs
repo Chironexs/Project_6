@@ -10,7 +10,7 @@ using RoomBooking.MVC.Services.Interface;
 
 namespace RoomBooking.MVC.Controllers
 {
-    public class RoomController : Controller
+   public class RoomController : Controller
     {
         private readonly IRoomService roomService;
         private readonly UserManager<IdentityUser> userManager;
@@ -27,21 +27,21 @@ namespace RoomBooking.MVC.Controllers
             return View(allRooms);
         }
 
-        // [Authorize(Roles = "Admin")]
+         [Authorize(Roles = "Admin")]
         public IActionResult AdminList()
         {
             var allRooms = roomService.GetAll();
             return View(allRooms);
         }
 
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Add()
         {
             return View();
         }
 
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Add(Room room)
         {
@@ -56,14 +56,14 @@ namespace RoomBooking.MVC.Controllers
             return View("Add", room);
         }
 
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Edit(int id)
         {
             return View(roomService.Get(id));
         }
 
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Edit(Room room)
         {
@@ -77,7 +77,7 @@ namespace RoomBooking.MVC.Controllers
 
             return RedirectToAction("List");
         }
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Remove(int id)
         {

@@ -26,7 +26,6 @@ namespace RoomBooking.MVC.Controllers
             roomService = _roomService;
         }
 
-        //statystyki
         public IActionResult Index()
         {
             AdminViewModel adminViewModel = new AdminViewModel();
@@ -34,16 +33,10 @@ namespace RoomBooking.MVC.Controllers
             adminViewModel.TotalIncome = bookingService.GetTotalIncome();
             adminViewModel.TotalNumberOfUsers = userManager.Users.Count();
             adminViewModel.TotalNumberOfRooms = roomService.GetTotalNumberOfRooms();
-
-            var chart = bookingService.GetAllToalPrice();
-
             adminViewModel.Booking = bookingService.GetAllToalPrice();
-
-           // return View(adminViewModel);
             return View("Index", adminViewModel);
         }
 
-        // użytkownicy
         public IActionResult UserList()
         {
             var userGetAll = userService.GetAll();
@@ -51,7 +44,6 @@ namespace RoomBooking.MVC.Controllers
             return View(userGetAll);
         }
 
-        // do przeniesiena do index
         public IActionResult Chart()
         {
             var chart = bookingService.GetAllToalPrice();

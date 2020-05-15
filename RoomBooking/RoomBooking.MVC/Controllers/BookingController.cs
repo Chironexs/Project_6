@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 
 namespace RoomBooking.MVC.Controllers
@@ -26,10 +27,15 @@ namespace RoomBooking.MVC.Controllers
             roomService = _roomService;
         }
 
-        // [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Add()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             ViewData["Error"] = "";
             ViewData["Success"] = "";
             BookingViewModel bookingViewModel = new BookingViewModel();
@@ -49,7 +55,8 @@ namespace RoomBooking.MVC.Controllers
             return View(bookingViewModel);
         }
 
-        // [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Add(Booking booking)
         {
@@ -176,14 +183,16 @@ namespace RoomBooking.MVC.Controllers
             ViewData["Error"] = "Niepoprawne dane";
             return View("Add", bookingViewModel);
         }
-        // [Authorize(Roles = "User")]
+
+//        [Authorize(Roles = "User")]
+//        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult ConfirmationOfAdding(BookingViewModel bookingViewModel)
         {
             return View(bookingViewModel);
         }
 
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult AdminList()
         {
@@ -197,10 +206,13 @@ namespace RoomBooking.MVC.Controllers
             return View(user);
         }
 
-        // [Authorize(Roles = "User")]
         [HttpGet]
         public IActionResult List()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             ViewData["Error"] = "";
             ViewData["Success"] = "";
             var userId = userManager.GetUserId(HttpContext.User);
@@ -212,7 +224,8 @@ namespace RoomBooking.MVC.Controllers
             return View(bookingViewModel);
         }
 
-        // [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -234,6 +247,8 @@ namespace RoomBooking.MVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //[Authorize(Roles = "User")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(BookingViewModel bookingViewModel)
         {
@@ -310,10 +325,6 @@ namespace RoomBooking.MVC.Controllers
             return RedirectToAction("List");
         }
 
-
-        //admin wszystkie
-        // [Authorize(Roles = "User")]
-        // [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Remove(int id)
         {
@@ -341,8 +352,6 @@ namespace RoomBooking.MVC.Controllers
             return RedirectToAction("List");
         }
 
-
-        // do widoku kalendarza 
         [HttpGet]
         public IActionResult Calendar()
         {
@@ -350,7 +359,7 @@ namespace RoomBooking.MVC.Controllers
             bookingViewModel.Rooms = roomService.GetAll();
             return View(bookingViewModel);
         }
-
+        
         [HttpPost]
         public IActionResult Calendar(int id)
         {
@@ -406,12 +415,6 @@ namespace RoomBooking.MVC.Controllers
                 listId.Add(booking);
             }
             return Ok(listId);
-        }
-
-        [NonAction]
-        public bool Validation(Booking booking)
-        {
-            return true;
         }
     }
 }

@@ -8,62 +8,27 @@
 }
 
 @Html.Partial("_LayoutLogInUserHeader")
-
-<div id="content-1">
-    <div class="col" style="margin-top: 100px;">
-        <div class="card shadow mb-3">
-            <div class="card-header py-3">
-                <p class="text-primary m-0 font-weight-bold" style="color: rgb(0, 0, 0);">Nowa rezerwacja</p>
-            </div>
-            @Html.Partial("_ViewData")
-            <div class="card-body">
-                <form asp-action="Add" metod="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label asp-for="RoomId">
-                                    <strong>Wybierz salę</strong>
-                                </label>
-                                <select asp-for="RoomId" class="form-control" id="chooseRoom">
-                                    @foreach (var room in Model.Rooms)
-                                    {
-                                        <option value="@room.Id">@room.Name</option>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col"></div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label asp-for="Date" class="control-label">
-                                    <strong>Data</strong>
-                                </label>
-                                <input asp-for="Date" class="form-control">
-                                <span asp-validation-for="Date" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col"></div>
-                    </div>
-
-                    <div class="checkbox">
-                        <label>
-                            <input asp-for="AllDay" type="checkbox" id="invoice"> Rezerwacja całodniowa
-                        </label>
-                    </div>
-
-                    <div id="invoiceData">
+    <div id="content-1">
+        <div class="col" style="margin-top: 100px;">
+            <div class="card shadow mb-3">
+                <div class="card-header py-3">
+                    <p class="text-primary m-0 font-weight-bold" style="color: rgb(0, 0, 0);">Nowa rezerwacja</p>
+                </div>
+                @Html.Partial("_ViewData")
+                <div class="card-body">
+                    <form asp-action="Add" metod="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label asp-for="StarTime">
-                                        <strong>Godzina rozpoczęcia</strong>
+                                    <label asp-for="RoomId">
+                                        <strong>Wybierz salę</strong>
                                     </label>
-                                    <select asp-for="StarTime" asp-items="Model.ListOfTimeIntervals" class="form-control">
-                                        <span asp-validation-for="StarTime" class="text-danger"></span>
+                                    <select asp-for="RoomId" class="form-control" id="chooseRoom">
+                                        @foreach (var room in Model.Rooms)
+                                        {
+                                            <option value="@room.Id">@room.Name</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -73,90 +38,124 @@
                         <div class="form-row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label asp-for="EndTime">
-                                        <strong>Godzina zakończenia</strong>
+                                    <label asp-for="Date" class="control-label">
+                                        <strong>Data</strong>
                                     </label>
-                                    <select asp-for="EndTime" asp-items="Model.ListOfTimeIntervals" class="form-control">
-                                        <span asp-validation-for="EndTime" class="text-danger"></span>
-                                    </select>
+                                    <input asp-for="Date" class="form-control">
+                                    <span asp-validation-for="Date" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col"></div>
                         </div>
-                    </div>
+
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="AllDay" type="checkbox" id="invoice"> Rezerwacja całodniowa
+                            </label>
+                        </div>
+
+                        <div id="invoiceData">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label asp-for="StarTime">
+                                            <strong>Godzina rozpoczęcia</strong>
+                                        </label>
+                                        <select asp-for="StarTime" asp-items="Model.ListOfTimeIntervals" class="form-control">
+                                            <span asp-validation-for="StarTime" class="text-danger"></span>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col"></div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label asp-for="EndTime">
+                                            <strong>Godzina zakończenia</strong>
+                                        </label>
+                                        <select asp-for="EndTime" asp-items="Model.ListOfTimeIntervals" class="form-control">
+                                            <span asp-validation-for="EndTime" class="text-danger"></span>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <button class="btn btn-primary btn-sm" type="submit">Dodaj rezerwację</button>
                         </div>
-                </form>
+                    </form>
+                </div>
             </div>
+            <div class="card shadow"></div>
         </div>
-        <div class="card shadow"></div>
     </div>
-</div>
 
 
-@section scripts
+    @section scripts
 {
-    <script type="text/javascript">
-        document.querySelector('#invoice').addEventListener('change',
-            function() {
-                if (this.checked)
-                    document.querySelector('#invoiceData').className += "invisible";
-                else {
-                    document.querySelector('#invoiceData').classList.remove("invisible");
-                }
-            });
-    </script>
-}
+        <script type="text/javascript">
+            document.querySelector('#invoice').addEventListener('change',
+                function () {
+                    if (this.checked)
+                        document.querySelector('#invoiceData').className += "invisible";
+                    else {
+                        document.querySelector('#invoiceData').classList.remove("invisible");
+                    }
+                });
+        </script>
+    }
 
-@* *@
-@* *@
-@* <div class="container-fluid"> *@
-@*     <h3 class="text-dark mb-1">Blank Page</h3> *@
-@* </div> *@
-@* <div class="col"> *@
-@*     <div class="row"> *@
-@*         <div class="col-md-4"> *@
-@*             <form asp-action="Add"> *@
-@*                 <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
-@*                 <div class="form-group"> *@
-@*                     <select asp-for="RoomId" class="form-control" id="choosePlan"> *@
-@*                         @foreach (var room in Model.Rooms) *@
-@*                         { *@
-@*                             <option value="@room.Id">@room.Name</option> *@
-@*                         } *@
-@*                     </select> *@
-@*                     <p></p> *@
-@* *@
-@*                     <ul> *@
-@*                         <table> *@
-@*                             @foreach (var room in Model.Rooms) *@
-@*                             { *@
-@*                                 <li> *@
-@*                                     <option value="@room.Id">@room.Name</option> *@
-@*                                 </li> *@
-@*                                 <tr> *@
-@*                                     <div class="form-group"> *@
-@*                                         <ul> *@
-@*                                              *@
-@*                                             @foreach (var booking in Model.Bookings) *@
-@*                                             { *@
-@*                                                 if (booking.RoomId == room.Id) *@
-@*                                                 { *@
-@*                                                     <li> @booking.StarTime</li> *@
-@* *@
-@*                                                     <li> @booking.EndTime </li> *@
-@*                                                     <p></p> *@
-@*                                                 } *@
-@*                                             } *@
-@*                                         </ul> *@
-@*                                     </div> *@
-@*                                 </tr> *@
-@*                             } *@
-@*                         </table> *@
-@*                     </ul> *@
-@*                 </div> *@
-@*             </form> *@
-@*         </div> *@
-@*     </div> *@
-@* </div> *@
+    @* *@
+    @* *@
+    @* <div class="container-fluid"> *@
+    @*     <h3 class="text-dark mb-1">Blank Page</h3> *@
+    @* </div> *@
+    @* <div class="col"> *@
+    @*     <div class="row"> *@
+    @*         <div class="col-md-4"> *@
+    @*             <form asp-action="Add"> *@
+    @*                 <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+    @*                 <div class="form-group"> *@
+    @*                     <select asp-for="RoomId" class="form-control" id="choosePlan"> *@
+    @*                         @foreach (var room in Model.Rooms) *@
+    @*                         { *@
+    @*                             <option value="@room.Id">@room.Name</option> *@
+    @*                         } *@
+    @*                     </select> *@
+    @*                     <p></p> *@
+    @* *@
+    @*                     <ul> *@
+    @*                         <table> *@
+    @*                             @foreach (var room in Model.Rooms) *@
+    @*                             { *@
+    @*                                 <li> *@
+    @*                                     <option value="@room.Id">@room.Name</option> *@
+    @*                                 </li> *@
+    @*                                 <tr> *@
+    @*                                     <div class="form-group"> *@
+    @*                                         <ul> *@
+    @*                                              *@
+    @*                                             @foreach (var booking in Model.Bookings) *@
+    @*                                             { *@
+    @*                                                 if (booking.RoomId == room.Id) *@
+    @*                                                 { *@
+    @*                                                     <li> @booking.StarTime</li> *@
+    @* *@
+    @*                                                     <li> @booking.EndTime </li> *@
+    @*                                                     <p></p> *@
+    @*                                                 } *@
+    @*                                             } *@
+    @*                                         </ul> *@
+    @*                                     </div> *@
+    @*                                 </tr> *@
+    @*                             } *@
+    @*                         </table> *@
+    @*                     </ul> *@
+    @*                 </div> *@
+    @*             </form> *@
+    @*         </div> *@
+    @*     </div> *@
+    @* </div> *@

@@ -61,7 +61,7 @@ namespace RoomBooking.MVC
 
             app.UseAuthentication();
 
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
